@@ -4,7 +4,7 @@ import time, os, json, argparse
 from pyVisDifftools.visdiff import VisDiff
 import data_loader as data
 import network.listener_net as net
-from utils.prepare_embedding import save_concise_emb
+#from utils.prepare_embedding import save_concise_emb
 from utils.train_listener_args_parser import train_args_parser
 import progressbar # pip install progressbar if not installed
 
@@ -41,7 +41,7 @@ def train(args):
             vocabulary = np.load(args.vocab_file).item()
         else:
             vocabulary = data.build_vocabulary(annFile_json_train, args.word_count_thresh, args.word_embed_type)
-    
+
     # Load word2vec embeddings (normally we use one-hot encoding instead)
     if args.word_embed_type == 'word2vec':
         word2vec_npy_path = "word2vec/word2vec_concise_"+str(args.word_count_thresh)+'.npy'
@@ -74,13 +74,13 @@ def train(args):
                                    img_dict=all_imgs_dict, feed_mode=feed_mode, rand_neg=False,
                                    max_length=args.max_sent_length, img_w=img_w, img_h=img_h,
                                    word_embed_type=args.word_embed_type, trim_last_batch=True, shuffle=False)
-    
+
     # Set result path
     EXPERIMENT_PATH = args.log_dir
     if not os.path.exists(EXPERIMENT_PATH):
         os.makedirs(EXPERIMENT_PATH)
     print "save result to:" + EXPERIMENT_PATH
-    
+
     log_dir = EXPERIMENT_PATH+'/summaries'
     if tf.gfile.Exists(log_dir):
         tf.gfile.DeleteRecursively(log_dir)
@@ -98,14 +98,14 @@ def train(args):
         sess = tf.Session()
 
         # Setup the network
-        my_net = net.listener_net(args, vocab_length=len(vocabulary), 
+        my_net = net.listener_net(args, vocab_length=len(vocabulary),
             graph=sess.graph, log_dir=log_dir, img_w=img_w, img_h=img_h, dataset=args.dataset)
         my_net.build()
 
         # Initialize the variables
         init = tf.global_variables_initializer()
         sess.run(init)
-        
+
         # Load pre-trained model weights
         if args.img_model == 'inception_v3':
             scope_name = 'InceptionV3'
@@ -167,7 +167,7 @@ def train(args):
                 if np.isnan(loss_train):
                     print('Model diverged with loss = NaN')
                     quit()
-               
+
                 # Save the model, for initialize and re-train in the future
                 if (step+1) % 500 == 0 or (step+1) == args.max_steps:
                     if args.train_img_model:
@@ -215,7 +215,7 @@ def train(args):
                 loss_val_all.append(loss_val/batch_count)
                 acc_txt2img_val_all.append(acc_txt2img*batch_count)
                 acc_txt2img_w12_val_all.append(acc_txt2img_w12*batch_count)
-            
+
             bar.finish()
             loss_val_all = np.sum(loss_val_all)*args.batch_size/(len(data_val.annotations)*2)
             acc_txt2img_val_all = np.sum(acc_txt2img_val_all)/(len(data_val.annotations)*2)
