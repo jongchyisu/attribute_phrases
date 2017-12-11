@@ -44,7 +44,7 @@ def build_vocabulary(json_path='', word_count_thresh=0, word_embed_type='one-hot
         chars, _ = zip(*count_pairs)
         vocab = dict(zip(chars, range(len(chars))))
             
-    else:  # 'word2vec' or 'one-hot'
+    else:  # 'one-hot' encoding
         annotations = VisDiff(json_path).dataset['annotations']
         all_text = ''
         for ann in annotations:

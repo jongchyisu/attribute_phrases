@@ -4,7 +4,6 @@ import time, os, json, argparse
 from pyVisDifftools.visdiff import VisDiff
 import data_loader as data
 import network.listener_net as net
-#from utils.prepare_embedding import save_concise_emb
 from utils.train_listener_args_parser import train_args_parser
 import progressbar # pip install progressbar if not installed
 
@@ -36,17 +35,11 @@ def train(args):
     # Load/Build vocabulary
     if args.word_embed_type == 'char':
         vocabulary = data.build_vocabulary(annFile_json_train, args.word_count_thresh, args.word_embed_type)
-    else:
+    else: # use one-hot encoding
         if tf.gfile.Exists(args.vocab_file):
             vocabulary = np.load(args.vocab_file).item()
         else:
             vocabulary = data.build_vocabulary(annFile_json_train, args.word_count_thresh, args.word_embed_type)
-
-    # Load word2vec embeddings (normally we use one-hot encoding instead)
-    if args.word_embed_type == 'word2vec':
-        word2vec_npy_path = "word2vec/word2vec_concise_"+str(args.word_count_thresh)+'.npy'
-        if not tf.gfile.Exists(word2vec_npy_path):
-            save_concise_emb(vocabulary, word2vec_npy_path)
 
     # Build data_loader
     if args.img_model=='vgg_16':
