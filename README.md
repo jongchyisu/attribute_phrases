@@ -3,7 +3,14 @@ This is the dataset and the training code with Tensorflow used in the paper:
 
 Jong-Chyi Su*, Chenyun Wu*, Huaizu Jiang, Subhransu Maji, "Reasoning about Fine-grained Attribute Phrases using Reference Games", International Conference on Computer Vision (ICCV), 2017
 
-[[Project]](http://people.cs.umass.edu/~jcsu/papers/visdiff/visdiff.html)
+	@inproceedings{su2017reasoning,
+	    Author = {Jong-Chyi Su and Chenyun Wu and Huaizu Jiang and Subhransu Maji},
+	    Title = {Reasoning about Fine-grained Attribute Phrases using Reference Games},
+	    Booktitle = {International Conference on Computer Vision (ICCV)},
+	    Year = {2017}
+	}
+
+[[Project page]](http://people.cs.umass.edu/~jcsu/papers/visdiff)
 [[Paper]](http://people.cs.umass.edu/~jcsu/papers/visdiff/visdiff.pdf)
 
 ## Dataset
